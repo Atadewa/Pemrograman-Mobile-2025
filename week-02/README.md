@@ -1,9 +1,9 @@
 # Pertemuan 2 - Variabel dan Tipe Data
 
-Nama : Aditya Atadewa  
-Kelas : TI 2H  
-NIM : 2341720174  
-No. Absen : 01
+**Nama : Aditya Atadewa**  
+**Kelas : TI 3G**  
+**NIM : 2341720174**  
+**No. Absen : 01**
 
 ---
 
@@ -51,12 +51,6 @@ Rangkumlah materi dari codelab ini menjadi poin-poin penting yang dapat Anda gun
 
 ### Jawaban
 
-### Pertanyaan
-
-Rangkumlah materi dari codelab ini menjadi poin-poin penting yang dapat Anda gunakan untuk membantu proses pengembangan aplikasi mobile menggunakan framework Flutter.
-
-### Jawaban
-
 **1. Keunggulan & Fitur Utama Dart**
 
 - Productive tooling: dukungan IDE, analisis kode, ekosistem paket besar.
@@ -95,6 +89,7 @@ Buatlah penjelasan dan contoh eksekusi kode tentang perbedaan Null Safety dan La
 - Dengan null safety, kita bisa lebih aman menghindari **Null Reference Error**.
 
 Contoh Kode Null Safety: [null_safety.dart](./src/null_safety.dart)
+
 ```dart
 void main() {
   // String name = null; // Error, karena String default non-nullable
@@ -109,6 +104,7 @@ void main() {
 ```
 
 Output:
+
 ![null-safety-img](./img/null-safety-img.png)
 
 #### 2. Late Variable
@@ -118,6 +114,7 @@ Output:
 - Jika variabel `late` diakses sebelum diinisialisasi, maka akan terjadi error runtime. 
 
 Contoh Kode Late Variable: [late_variable.dart](./src/late_variable.dart)
+
 ```dart
 void main(){
   late String message;
@@ -130,4 +127,5 @@ void main(){
 ```
 
 Output:
+
 ![late-variable-img](./img/late-variable-img.png)
