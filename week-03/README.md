@@ -329,4 +329,4 @@ Menampilkan bilangan prima dari 0 hingga 201 dilakukan dengan ketentuan sebagai 
 
 ### Output
 
-![output-tugas-praktikum-bilangan-prima](./img/image.png)
+![output-tugas-praktikum-bilangan-prima](./img/tugas-praktikum.png)
