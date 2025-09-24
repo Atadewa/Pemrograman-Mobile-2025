@@ -436,4 +436,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ![gambar 3](./aditya_app/images/03.png)
 
+**Output (GIF):**
+
 ![gif](./aditya_app/gif/01.gif)
