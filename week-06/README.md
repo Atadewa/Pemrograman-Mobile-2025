@@ -1,4 +1,4 @@
-# Pertemuan 5 - Aplikasi Pertama dan Widget Dasar Flutter
+# Pertemuan 6 - Layout dan Navigasi
 
 **Nama : Aditya Atadewa**  
 **Kelas : TI 3G**  
