@@ -1,4 +1,4 @@
-# Pertemuan 6 - Layout dan Navigasi
+# Pertemuan 7 - Manajemen Plugin
 
 **Nama : Aditya Atadewa**  
 **Kelas : TI 3G**  
