@@ -12,3 +12,7 @@
 |------------|---------|-------------------|
 | Week-2     | Pemrograman Dasar Dart - Bag.1 (Variabel dan Tipe Data) | [Praktikum Pertemuan 2](./week-02) |
 | Week-3     | Pemrograman Dasar Dart - Bag.2 (Percabangan dan Perulangan) | [Praktikum Pertemuan 3](./week-03) |
+| Week-4     | Pemrograman Dasar Dart - Bag.3 (Collections dan Functions) | [Praktikum Pertemuan 4](./week-04) |
+| Week-5     | Aplikasi Pertama dan Widget Dasar Flutter | [Praktikum Pertemuan 5](./week-05) |
+| Week-6     | Layout dan Navigasi | [Praktikum Pertemuan 6](./week-06) |
+| Week-7     | Manajemen Plugin | [Praktikum Pertemuan 7](./week-07) |
