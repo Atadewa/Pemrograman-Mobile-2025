@@ -265,6 +265,7 @@ floatingActionButton: FloatingActionButton(
 ```
 
 **Output Aplikasi kamera_flutter: (gif)**
+
 ![Hasil Aplikasi Praktikum 1 (gif)](./gif/praktikum1.gif)
 
 ---
@@ -654,6 +655,7 @@ void main() {
 ```
 
 **Output Aplikasi photo_filter_carousel: (gif)**
+
 ![Hasil Aplikasi Praktikum 2 (gif)](./gif/praktikum2.gif)
 
 ---
@@ -671,6 +673,7 @@ Gabungkan hasil praktikum 1 dengan hasil praktikum 2 sehingga setelah melakukan 
 Project: [Kamera Filter Carousel](./kamera_filter_carousel_aditya/)
 
 **Output Aplikasi photo_filter_carousel: (gif)**
+
 ![Hasil Aplikasi Kamera Filter Carousel (gif)](./gif/tugas_praktikum.gif)
 
 ### Soal 2
