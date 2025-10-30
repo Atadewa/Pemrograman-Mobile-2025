@@ -17,3 +17,4 @@
 | Week-6     | Layout dan Navigasi | [Praktikum Pertemuan 6](./week-06) |
 | Week-7     | Manajemen Plugin | [Praktikum Pertemuan 7](./week-07) |
 | Week-9     | Kamera | [Praktikum Pertemuan 9](./week-09) |
+| Week-10    | Dasar State Management | [Praktikum Pertemuan 10](./week-10) |
