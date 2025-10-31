@@ -831,9 +831,9 @@ Setelah menjalankan aplikasi:
 
 **Output Aplikasi yang dihasilkan:**
 
-| GIF Demo | Screenshot 1 | Screenshot 2 | Screenshot 3 |
+| GIF Demo | Screenshot 1 | Screenshot 2 |
 | -------- | ------------ | ------------ | ------------ |
-| <img src="./media/praktikum3.gif" alt="Gif Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.1.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.2.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.3.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> |
+| <img src="./media/praktikum3.gif" alt="Gif Output Aplikasi Praktikum 3" width="300"> | <img src="./media/praktikum3.1.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="300"> | <img src="./media/praktikum3.3.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="300"> |
 
 ---
 
@@ -879,9 +879,9 @@ Lakukan capture hasil dari Langkah 14 berupa GIF, kemudian jelaskan apa yang tel
 
 ### Jawaban
 
-| GIF Demo | Screenshot 1 | Screenshot 2 | Screenshot 3 |
+| GIF Demo | Screenshot 1 | Screenshot 2 |
 | -------- | ------------ | ------------ | ------------ |
-| <img src="./media/praktikum3.gif" alt="Gif Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.1.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.2.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> | <img src="./media/praktikum3.3.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="290"> |
+| <img src="./media/praktikum3.gif" alt="Gif Output Aplikasi Praktikum 3" width="300"> | <img src="./media/praktikum3.1.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="300"> | <img src="./media/praktikum3.3.webp" alt="Screenshot Output Aplikasi Praktikum 3" width="300"> |
 
 **Penjelasan**:
 
