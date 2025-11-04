@@ -333,3 +333,68 @@ getNumber().then((value) {
 **Output yang dihasilkan:**
 
 <img src="./media/praktikum3.gif" alt="Gif Output Praktikum 3" width="500">
+
+---
+
+## Praktikum 4: Memanggil Future secara Paralel
+
+### Langkah 1: Menambahkan Kode di `main.dart`
+
+Menambahkan method berikut ke dalam class `_FuturePageState`.
+
+```dart
+void returnFG() {
+  FutureGroup<int> futureGroup = FutureGroup<int>();
+  futureGroup.add(returnOneAsync());
+  futureGroup.add(returnTwoAsync());
+  futureGroup.add(returnThreeAsync());
+  futureGroup.close();
+  futureGroup.future.then((List<int> value) {
+    int total = 0;
+    for (var element in value) {
+      total += element;
+    }
+    setState(() {
+      result = total.toString();
+    });
+  });
+}
+```
+
+### Langkah 2: Mengubah Kode pada `onPressed()`
+
+Melakukan comment kode sebelumnya, kemudian memanggil method dari langkah 1.
+
+```dart
+onPressed: () {
+  returnFG();
+}
+```
+
+### Langkah 3: Running Aplikasi
+
+#### Soal 7
+
+> Capture hasil praktikum Anda berupa GIF dan lampirkan di README. 
+
+<img src="./media/praktikum4.gif" alt="Gif Output Praktikum 4" width="500">
+
+Hasil angka 6 ditampilkan lebih cepat, hanya dalam 3 detik, dibandingkan dengan praktikum sebelumnya yang menunggu hingga 9 detik.
+
+### Langkah 4: Mengganti Variabel `futureGroup`
+
+Menggunakan `FutureGroup` dengan `Future.wait` seperti kode berikut.
+
+```dart
+final futures = Future.wait<int>([
+  returnOneAsync(),
+  returnTwoAsync(),
+  returnThreeAsync(),
+]);
+```
+
+#### Soal 8
+
+> Jelaskan maksud perbedaan kode langkah 1 dan 4!
+> - Pada langkah 1, digunakan `FutureGroup` untuk mengumpulkan beberapa `Future` secara manual.
+> - Sedangkan pada langkah 4, digunakan `Future.wait` untuk mengeksekusi beberapa `Future` secara paralel dalam satu perintah.
