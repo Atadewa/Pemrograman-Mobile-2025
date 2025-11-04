@@ -398,3 +398,78 @@ final futures = Future.wait<int>([
 > Jelaskan maksud perbedaan kode langkah 1 dan 4!
 > - Pada langkah 1, digunakan `FutureGroup` untuk mengumpulkan beberapa `Future` secara manual.
 > - Sedangkan pada langkah 4, digunakan `Future.wait` untuk mengeksekusi beberapa `Future` secara paralel dalam satu perintah.
+
+---
+
+## Praktikum 5: Menangani Respon Error pada Async Code
+
+### Langkah 1: Menambahkan kode pada `main.dart`
+
+Menambahkan method berikut ini ke dalam class `_FuturePageState`
+
+```dart
+Future returnError() async {
+  await Future.delayed(const Duration(seconds: 2));
+  throw Exception('Something terrible happened!');
+}
+```
+
+### Langkah 2: Mengubah kode pada `ElevatedButton`
+
+Mengubah dengan kode berikut.
+
+```dart
+returnError()
+  .then((value) {
+    setState(() {
+      result = 'Success';
+    });
+  })
+  .catchError((onError) {
+    setState(() {
+      result = onError.toString();
+    });
+  })
+  .whenComplete(() => print('Complete'));
+```
+
+### Langkah 3: Running Aplikasi
+
+#### Soal 9
+
+> Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+
+<img src="./media/praktikum5.gif" alt="Gif Output Praktikum 5" width="500">
+
+Pada bagian debug console akan melihat teks Complete seperti berikut.
+
+![praktikum 5 langkah 3](./media/praktikum5.1.png)
+
+### Langkah 4: Menambahkan method `handleError()`
+
+Menambahkan kode berikut di dalam class `_FutureStatePage`
+
+```dart
+Future handleError() async {
+  try {
+    await returnError();
+  } catch (error) {
+    setState(() {
+      result = error.toString();
+    });
+  } finally {
+    print('Complete');
+  }
+}
+```
+
+#### Soal 10
+
+> Panggil method handleError() tersebut di ElevatedButton, lalu run. Apa hasilnya? Jelaskan perbedaan kode langkah 1 dan 4!
+>
+> <img src="./media/praktikum5.gif" alt="Gif Output Praktikum 5" width="500">
+>
+> - Ketika method `handleError()` dipanggil, hasil yang muncul adalah pesan error ditampilkan pada UI, dan teks complete muncul di debug console.
+> - Perbedaan antara langkah 1 dan langkah 4 adalah pada cara penanganan error. Langkah 1 menggunakan `.then(),` `.catchError()`, dan `.whenComplete()` yang merupakan penanganan error berbasis callback pada `Future`. 
+> - Sedangkan langkah 4 menggunakan `try-catch-finally`, sehingga penanganan error terlihat lebih terstruktur dan lebih mudah dipahami seperti alur kode sinkron.
+
