@@ -95,12 +95,11 @@ class _FuturePageState extends State<FuturePage> {
 }
 ```
 
-
 ### Langkah 4: Menambahkan method `getData()`
 
 Menambahkan method ini ke dalam class `_FuturePageState` yang berguna untuk mengambil data dari API Google Books.
 
-### Soal 2
+#### Soal 2
 
 > Carilah judul buku favorit Anda di Google Books, lalu ganti ID buku pada variabel path di kode tersebut.
 > - Judul buku: Atomic Habits
@@ -154,3 +153,83 @@ ElevatedButton(
 <img src="./media/praktikum1.gif" alt="Gif Output Praktikum 1" width="500">
 
 ---
+
+## Praktikum 2: Menggunakan await/async untuk Menghindari Callbacks
+
+### Langkah 1: Mengubah file `main.dart`
+
+Menambahkan tiga method berisi kode seperti berikut di dalam class `_FuturePageState`.
+
+```dart
+Future<int> returnOneAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 1;
+}
+
+Future<int> returnTwoAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 2;
+}
+
+Future<int> returnThreeAsync() async {
+  await Future.delayed(const Duration(seconds: 3));
+  return 3;
+}
+```
+
+### Langkah 2: Menambahkan method `count()`
+
+Menambahkan lagi method `count()` di bawah ketiga method pada langkah 1.
+
+```dart
+Future count() async {
+  int total = 0;
+  total = await returnOneAsync();
+  total += await returnTwoAsync();
+  total += await returnThreeAsync();
+  setState(() {
+    result = total.toString();
+  });
+}
+```
+
+### Langkah 3: Memanggil `count()`
+
+Melakukan comment kode sebelumnya, kemudian mengubah isi kode `onPressed()` menjadi seperti berikut.
+
+```dart
+ElevatedButton(
+  child: Text('GO!'),
+  onPressed: () {
+    count();
+  },
+),
+```
+
+### Langkah 4: Run
+
+Melakukan running aplikasi.
+
+#### Soal 4
+
+> Jelaskan maksud kode langkah 1 dan 2 tersebut!
+> 
+> **Penjelasan Langkah 1:**
+> - Ketiga method pada langkah 1 (`returnOneAsync`, `returnTwoAsync`, `returnThreeAsync`) adalah fungsi asynchronous yang menggunakan await `Future.delayed(Duration(seconds: 3))` untuk mensimulasikan proses yang memerlukan waktu, seperti mengambil data dari server.
+> - Setelah jeda 3 detik, masing-masing mengembalikan nilai 1, 2, dan 3.
+>
+> **Penjelasan Langkah 2:**
+> Method `count()` melakukan:
+> - Mendeklarasikan variabel total.
+> - Menjalankan ketiga fungsi asynchronous sebelumnya secara berurutan menggunakan `await` (total waktu menunggu 9 detik).
+>   - `await returnOneAsync()` → menunggu 3 detik
+>   - `await returnTwoAsync()` → menunggu 3 detik lagi
+>   - `await returnThreeAsync()` → menunggu 3 detik lagi
+> - Menjumlahkan hasilnya ke dalam total.
+> - Memanggil setState untuk mengubah nilai result pada UI sesuai total yang diperoleh (total = 6).
+
+**Output yang dihasilkan:**
+
+<img src="./media/praktikum2.gif" alt="Gif Output Praktikum 2" width="500">
+
+Hasil angka 6 akan tampil setelah delay 9 detik.
