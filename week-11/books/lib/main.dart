@@ -106,6 +106,23 @@ class _FuturePageState extends State<FuturePage> {
     });
   }
 
+  Future<int> returnError() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception('Something terrible happened!');
+  }
+
+  Future handleError() async {
+    try {
+      await returnError();
+    } catch (e) {
+      setState(() {
+        result = e.toString();
+      });
+    } finally {
+      print('complete');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +133,20 @@ class _FuturePageState extends State<FuturePage> {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                returnFG();
+                handleError();
+                // returnError()
+                //     .then((value) {
+                //       setState(() {
+                //         result = 'Success';
+                //       });
+                //     })
+                //     .catchError((onError) {
+                //       setState(() {
+                //         result = onError.toString();
+                //       });
+                //     })
+                //     .whenComplete(() => print('Complete'));
+                // returnFG();
                 // getNumber()
                 //     .then((value) {
                 //       setState(() {
