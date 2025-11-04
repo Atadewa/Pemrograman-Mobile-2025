@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -83,6 +84,28 @@ class _FuturePageState extends State<FuturePage> {
     }
   }
 
+  Future returnFG() async {
+    FutureGroup<int> futureGroup = FutureGroup<int>();
+    futureGroup.add(returnOneAsync());
+    futureGroup.add(returnTwoAsync());
+    futureGroup.add(returnThreeAsync());
+    futureGroup.close();
+    final futures = await futureGroup.future;
+
+    // final futures = Future.wait<int>([
+    //   returnOneAsync(),
+    //   returnTwoAsync(),
+    //   returnThreeAsync(),
+    // ]);
+    int total = 0;
+    for (var num in futures) {
+      total += num;
+    }
+    setState(() {
+      result = total.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,15 +116,16 @@ class _FuturePageState extends State<FuturePage> {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                getNumber()
-                    .then((value) {
-                      setState(() {
-                        result = value.toString();
-                      });
-                    })
-                    .catchError((e) {
-                      result = 'An error occurred';
-                    });
+                returnFG();
+                // getNumber()
+                //     .then((value) {
+                //       setState(() {
+                //         result = value.toString();
+                //       });
+                //     })
+                //     .catchError((e) {
+                //       result = 'An error occurred';
+                //     });
                 // count();
                 // setState(() {});
                 // getData()
