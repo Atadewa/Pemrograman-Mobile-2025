@@ -233,3 +233,103 @@ Melakukan running aplikasi.
 <img src="./media/praktikum2.gif" alt="Gif Output Praktikum 2" width="500">
 
 Hasil angka 6 akan tampil setelah delay 9 detik.
+
+---
+
+## Praktikum 3: Menggunakan Completer di Future
+
+### Langkah 1: Menambahkan Kode di `main.dart`
+
+Mengimpor package `async` berikut.
+
+```dart
+import 'package:async/async.dart';
+```
+
+### Langkah 2: Menambahkan Variabel dan Method
+
+Menambahkan variabel `late` dan method di class `_FuturePageState` seperti berikut ini.
+
+```dart
+late Completer completer;
+
+Future getNumber() {
+  completer = Completer<int>();
+  calculate();
+  return completer.future;
+}
+
+Future calculate() async {
+  await Future.delayed(const Duration(seconds : 5));
+  completer.complete(42);
+}
+```
+
+### Langkah 3: Mengganti isi kode `onPressed()`
+
+Menambahkan kode berikut pada fungsi `onPressed()` dan melakukan comment pada kode sebelumnya.
+
+```dart
+getNumber().then((value) {
+  setState(() {
+    result = value.toString();
+  });
+});
+```
+
+### Langkah 4: Running Aplikasi
+
+#### Soal 5
+
+> Jelaskan maksud kode langkah 2 tersebut!
+>
+> Pada langkah 2, digunakan Completer untuk membuat Future secara manual.
+> - Completer dipakai untuk mengontrol sendiri kapan sebuah Future dianggap selesai.
+> - `getNumber()` membuat `Future` baru, lalu memanggil `calculate()`.
+> - `calculate()` menunggu 5 detik, lalu menyelesaikan `Future` dengan `completer.complete(42)`.
+> - Sehingga, setelah menekan tombol, perlu untuk menunggu selama 5 detik sebelum hasil 42 ditampilkan di UI.
+
+**Output yang dihasilkan:**
+
+<img src="./media/praktikum3.gif" alt="Gif Output Praktikum 3" width="500">
+
+### Langkah 5: Mengubah method `calculate()`
+
+Mengubah isi code method `calculate()` menjadi seperti berikut.
+
+```dart
+calculate() async {
+  try {
+    await new Future.delayed(const Duration(seconds: 5));
+    completer.complete(42);
+    // throw Exception();
+  } catch (_) {
+    completer.completeError({});
+  }
+}
+```
+
+### Langkah 6: Mengubah kode pada `onPressed()`
+
+Mengubah kode menjadi seperti berikut.
+
+```dart
+getNumber().then((value) {
+  setState(() {
+    result = value.toString();
+  });
+}).catchError((e) {
+  result = 'An error occurred';
+});
+```
+
+#### Soal 6
+
+> Jelaskan maksud perbedaan kode langkah 2 dengan langkah 5-6 tersebut!
+> - Pada langkah 2, `calculate()` diasumsikan selalu berhasil sehingga `Future` hanya dipenuhi dengan complete(42).
+> - Sedangkan pada langkah 5, `calculate()` dibuat lebih realistis, yaitu bisa terjadi error. Oleh karena itu `completer.completeError(e);` digunakan saat terjadi kesalahan.
+> - Lalu pada langkah 6, tombol menangani kemungkinan error tersebut dengan `.catchError(...)` sehingga aplikasi menampilkan pesan "An error occurred" tanpa crash.
+
+**Output yang dihasilkan:**
+
+<img src="./media/praktikum3.gif" alt="Gif Output Praktikum 3" width="500">
