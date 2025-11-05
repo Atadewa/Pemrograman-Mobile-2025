@@ -473,3 +473,149 @@ Future handleError() async {
 > - Perbedaan antara langkah 1 dan langkah 4 adalah pada cara penanganan error. Langkah 1 menggunakan `.then(),` `.catchError()`, dan `.whenComplete()` yang merupakan penanganan error berbasis callback pada `Future`. 
 > - Sedangkan langkah 4 menggunakan `try-catch-finally`, sehingga penanganan error terlihat lebih terstruktur dan lebih mudah dipahami seperti alur kode sinkron.
 
+---
+
+## Praktikum 6: Menggunakan `Future` dengan `StatefulWidget`
+
+### Langkah 1: Menginstall plugin geolocator
+
+Menambahkan plugin geolocator dengan mengetik perintah berikut di terminal.
+
+```terminal
+flutter pub add geolocator
+```
+
+**Output:**
+![praktikum 6 langkah 1](./media/praktikum6.1.png)
+
+### Langkah 2: Menambahkan Permission GPS
+
+Untuk platform Android, menambahkan baris kode berikut di file `android/app/src/main/androidmanifest.xml`
+
+```dart
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+```
+
+Untuk platform iOS, menambahkan baris kode berikut di file `Info.plist`
+
+```dart
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs to access your location</string>
+```
+
+### Langkah 3: Membuat file `geolocation.dart`
+
+Menambahkan file baru di folder lib.
+
+![praktikum 6 langkah 3](./media/praktikum6.2.png)
+
+### Langkah 4: Membuat StatefulWidget
+
+Membuat class `LocationScreen` di dalam file `geolocation.dart`
+
+### Langkah 5: Mengisi kode `geolocation.dart`
+
+#### Soal 11
+
+> Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+class LocationScreen extends StatefulWidget {
+  const LocationScreen({super.key});
+
+  @override
+  State<LocationScreen> createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  String myPosition = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getPosition().then((Position myPos) {
+      myPosition =
+          'latitude: ${myPos.latitude.toString()} - Longitude: ${myPos.longitude.toString()}';
+      setState(() {
+        myPosition = myPosition;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Current Location - Atadewa')),
+      body: Center(child: Text(myPosition)),
+    );
+  }
+
+  Future<Position> getPosition() async {
+    await Geolocator.requestPermission();
+    await Geolocator.isLocationServiceEnabled();
+    Position? position = await Geolocator.getCurrentPosition();
+    return position;
+  }
+}
+```
+
+### Langkah 6: Edit main.dart
+
+Memanggil screen baru tersebut di file main.dart seperti berikut.
+
+```dart
+  home: LocationScreen()
+```
+
+### Langkah 7: Running Aplikasi
+
+Running project di device atau emulator (bukan browser), maka akan tampil seperti berikut ini.
+
+<img src="./media/praktikum6.1.gif" alt="Gif Output Praktikum 6 Langkah 7" width="500">
+
+### Langkah 8: Menambahkan Animasi Loading
+
+Menambahkan widget loading seperti kode berikut.
+
+```dart
+@override
+Widget build(BuildContext context) {
+  final myWidget = myPosition == ''
+      ? const CircularProgressIndicator()
+      : const Text(myPosition);
+
+  return Scaffold(
+    appBar: AppBar(title: Text('Current Location - Atadewa')),
+    body: Center(child: myWidget),
+  );
+}
+```
+
+#### Soal 12
+
+> - Jika Anda tidak melihat animasi loading tampil, kemungkinan itu berjalan sangat cepat. Tambahkan delay pada method `getPosition()` dengan kode `await Future.delayed(const Duration(seconds: 3));`
+> 
+>   ```dart
+>   Future<Position> getPosition() async {
+>     await Geolocator.requestPermission();
+>     await Geolocator.isLocationServiceEnabled();
+>     await Future.delayed(const Duration(seconds: 3));
+>     Position? position = await Geolocator.getCurrentPosition();
+>     return position;
+>   }
+>   ```
+> - Apakah Anda mendapatkan koordinat GPS ketika run di browser? Mengapa demikian?
+> 
+>   <img src="./media/praktikum6.2.gif" alt="Gif Output Praktikum 6 Soal 11" width="400">
+>
+>   Ya, saya tetap mendapatkan koordinat GPS ketika menjalankan aplikasi di browser. Hal ini terjadi karena browser sudah memiliki API Geolocation bawaan yang dapat mengambil lokasi perangkat melalui izin akses lokasi (location permission) yang muncul pada browser.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README
+>
+>   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
+
+
