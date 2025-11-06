@@ -883,3 +883,137 @@ home: const NavigationFirst(),
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 >   <img src="./media/praktikum8.gif" alt="Gif Output Praktikum 8" width="500">
+
+## Praktikum 9: Memanfaatkan `async/await` dengan Widget Dialog
+
+### Langkah 1: Membuat file baru `navigation_dialog.dart`
+
+Membuat file dart baru di folder lib.
+
+### Langkah 2: Mengisi kode `navigation_dialog.dart`
+
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationDialogScreen extends StatefulWidget {
+  const NavigationDialogScreen({super.key});
+
+  @override
+  State<NavigationDialogScreen> createState() => _NavigationDialogScreenState();
+}
+
+class _NavigationDialogScreenState extends State<NavigationDialogScreen> {
+  Color color = Colors.orange.shade200;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation Dialog Screen - Atadewa'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Change Color'),
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Langkah 3: Menambahkan method `async`
+
+```dart
+_showColorDialog(BuildContext context) async {
+  await showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (_) {
+      return AlertDialog(
+        title: const Text('Very important question'),
+        content: const Text('Please choose a color'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Red'),
+            onPressed: () {
+              Color color = Colors.red.shade700;
+              Navigator.pop(context, color);
+            },
+          ),
+          TextButton(
+            child: const Text('Green'),
+            onPressed: () {
+              Color color = Colors.green.shade700;
+              Navigator.pop(context, color);
+            },
+          ),
+          TextButton(
+            child: const Text('Blue'),
+            onPressed: () {
+              Color color = Colors.blue.shade700;
+              Navigator.pop(context, color);
+            },
+          ),
+        ],
+      );
+    },
+  );
+  setState(() {});
+}
+```
+
+### Langkah 4: Memanggil method di `ElevatedButton`
+
+```dart
+  onPressed() {
+    _showColorDialog(context);
+  }
+```
+
+Langkah 5: Mengubah file `main.dart`
+
+Mengubah properti home
+
+```dart
+home: const NavigationDialog();
+```
+
+### Langkah 6: Running Aplikasi
+
+#### Soal 17
+
+> - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>
+>   Ketika salah satu tombol pada dialog ditekan, dialog akan tertutup dan mengembalikan nilai warna menggunakan `Navigator.pop(context, color)`. Nilai ini diterima kembali oleh method `_showColorDialog()` karena menggunakan `await showDialog()`. Setelah nilai diterima, `setState()` dipanggil sehingga background halaman berubah sesuai warna yang dipilih. Hal tersebut dapat terjadi karena dialog berfungsi sebagai mekanisme pengembalian data (return value) dalam navigasi.
+>
+> - Gantilah 3 warna pada langkah 3 dengan warna favorit Anda!
+>
+>   ```dart
+>      TextButton(
+>        child: const Text('Lavender'),
+>        onPressed: () {
+>          color = Colors.purple.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>      TextButton(
+>        child: const Text('Mint'),
+>        onPressed: () {
+>          color = Colors.teal.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>      TextButton(
+>        child: const Text('Sky Blue'),
+>        onPressed: () {
+>          color = Colors.lightBlue.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>    ```
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum9.gif" alt="Gif Output Praktikum 9" width="500">
