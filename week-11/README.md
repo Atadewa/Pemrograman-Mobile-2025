@@ -618,4 +618,103 @@ Widget build(BuildContext context) {
 >
 >   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
 
+---
+
+## Praktikum 7: Manajemen `Future` dengan `FutureBuilder`
+
+### Langkah 1: Memodifikasi method `getPosition()`
+
+Membuka file `geolocation.dart` kemudian menggant isi method dengan kode berikut.
+
+```dart
+Future<Position> getPosition() async {
+  await Geolocator.isLocationServiceEnabled();
+  await Future.delayed(const Duration(seconds: 3));
+  Position position = await Geolocator.getCurrentPosition();
+  return position;
+}
+```
+
+### Langkah 2: Menambahkan Variabel
+
+Menambah variabel berikut di class `_LocationScreenState`
+
+```dart
+Future<Position>? position;
+```
+
+### Langkah 3: Menambahkan `initState()`
+
+Tambah method berikut dan set variabel position
+
+```dart
+@override
+void initState() {
+  super.initState();
+  position = getPosition();
+}
+```
+
+## Langkah 4: Mengubah method `build()`
+
+Melakukan comment pada kode lama dan mengubah atau menambahkan dengan kode berikut.
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: Text('Current Location - Atadewa')),
+    body: Center(child: FutureBuilder(
+      future: position,
+      builder: (BuildContext context, AsyncSnapshot<Position>
+          snapshot) {
+        if (snapshot.connectionState ==
+            ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        }
+        else if (snapshot.connectionState ==
+            ConnectionState.done) {
+          return Text(snapshot.data.toString());
+        }
+        else {
+          return const Text('');
+        }
+      },
+    )),
+  );
+}
+```
+
+#### Soal 13
+
+> - Apakah ada perbedaan UI dengan praktikum sebelumnya? Mengapa demikian?
+>
+>   Tidak ada perubahan pada tampilan utama, tetapi cara kerja UI berbeda. Pada praktikum sebelumnya, UI di-update dengan `setState()` secara manual. Dengan `FutureBuilder`, UI diperbarui secara otomatis sesuai status `Future` sehingga kode menjadi lebih rapi, efisien, dan reaktif.
+> 
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>   
+>   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
+
+### Langkah 5: Menambahkan handling error
+
+Menambahkan kode berikut untuk menangani ketika terjadi error
+
+```dart
+else if (snapshot.connectionState == ConnectionState.done) {
+  if (snapshot.hasError) {
+     return Text('Something terrible happened!');
+  }
+  return Text(snapshot.data.toString());
+}
+```
+
+#### Soal 14
+
+> - Apakah ada perbedaan UI dengan langkah sebelumnya? Mengapa demikian?
+>
+>   Tidak, tampilan masih sama, tetapi sekarang ketika terjadi error, UI menampilkan pesan kesalahan karena telah ditambahkan pengecekan `snapshot.hasError`, sehingga error tidak menyebabkan aplikasi crash dan pengguna mendapatkan informasi yang jelas.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
 
