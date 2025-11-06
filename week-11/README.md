@@ -655,7 +655,7 @@ void initState() {
 }
 ```
 
-## Langkah 4: Mengubah method `build()`
+### Langkah 4: Mengubah method `build()`
 
 Melakukan comment pada kode lama dan mengubah atau menambahkan dengan kode berikut.
 
@@ -693,7 +693,7 @@ Widget build(BuildContext context) {
 > 
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >   
->   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
+>   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 7 Soal 13" width="500">
 
 ### Langkah 5: Menambahkan handling error
 
@@ -716,5 +716,170 @@ else if (snapshot.connectionState == ConnectionState.done) {
 >
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
->   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 6 Soal 11" width="500">
+>   <img src="./media/praktikum6.3.gif" alt="Gif Output Praktikum 7 Soal 14" width="500">
 
+---
+
+## Praktikum 8: Navigasi route dengan Future Function
+
+### Langkah 1: Membuat file baru `navigation_first.dart`
+
+Buatlah file baru tersebut di project lib.
+
+### Langkah 2: Mengisi kode `navigation_first.dart`
+
+#### Soal 15
+
+> - Tambahkan nama panggilan Anda pada tiap properti title sebagai identitas pekerjaan Anda.
+> - Silakan ganti dengan warna tema favorit Anda.
+
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationFirst extends StatefulWidget {
+  const NavigationFirst({super.key});
+
+  @override
+  State<NavigationFirst> createState() => _NavigationFirstState();
+}
+
+class _NavigationFirstState extends State<NavigationFirst> {
+  Color color = Colors.orange.shade200;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      appBar: AppBar(
+        title: const Text('Navigation First Screen - Atadewa'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Change Color'),
+          onPressed: () {
+            _navigateAndGetColor(context);
+          },
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Langkah 3: Menambahkan method di class `_NavigationFirstState`
+
+Menambahkan method berikut.
+
+```dart
+  Future _navigateAndGetColor(BuildContext context) async {
+    color =
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NavigationSecond()),
+        ) ??
+        Colors.orange.shade200;
+    setState(() {});
+  }
+```
+
+### Langkah 4: Membuat file baru `navigation_second.dart`
+
+Membuat file baru di project lib.
+
+### Langkah 5: Membuat class `NavigationSecond` dengan `StatefulWidget`
+
+```dart
+import 'package:flutter/material.dart';
+
+class NavigationSecond extends StatefulWidget {
+  const NavigationSecond({super.key});
+
+  @override
+  State<NavigationSecond> createState() => _NavigationSecondState();
+}
+
+class _NavigationSecondState extends State<NavigationSecond> {
+  @override
+  Widget build(BuildContext context) {
+    Color color;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigation Second Screen - Atadewa'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              child: const Text('Red'),
+              onPressed: () {
+                color = Colors.red.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Green'),
+              onPressed: () {
+                color = Colors.green.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Blue'),
+              onPressed: () {
+                color = Colors.blue.shade700;
+                Navigator.pop(context, color);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Langkah 6: Mengubah Kode `main.dart`
+
+Mengubah properti home.
+
+```dart
+home: const NavigationFirst(),
+```
+
+### Langkah 7: Running Aplikasi
+
+#### Soal 16
+> - Cobalah klik setiap button, apa yang terjadi ? Mengapa demikian ?
+>
+>   Ketika salah satu tombol warna ditekan pada halaman kedua, aplikasi mengirimkan nilai warna tersebut kembali ke halaman pertama menggunakan `Navigator.pop(context, color)`. Halaman pertama menerima nilai tersebut melalui `await Navigator.push()` dan melakukan `setState()` sehingga background halaman berubah. Hal tersebut dapat terjadi karena `Navigator` dapat mengembalikan data dari halaman tujuan ke halaman asal.
+>
+> - Gantilah 3 warna pada langkah 5 dengan warna favorit Anda!
+>   ```dart
+>      ElevatedButton(
+>        child: const Text('Lavender'),
+>        onPressed: () {
+>          color = Colors.purple.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>      ElevatedButton(
+>        child: const Text('Mint'),
+>        onPressed: () {
+>          color = Colors.teal.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>      ElevatedButton(
+>        child: const Text('Sky Blue'),
+>        onPressed: () {
+>          color = Colors.lightBlue.shade200;
+>          Navigator.pop(context, color);
+>        },
+>      ),
+>   ```
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum8.gif" alt="Gif Output Praktikum 8" width="500">
