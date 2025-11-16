@@ -230,3 +230,220 @@ colorStream.getColors().listen((eventColor) {
 > - `listen()`
 >
 >   Mendaftarkan listener (callback) yang akan dipanggil setiap ada event baru dab tidak menghentikan fungsi lain.
+
+---
+
+## Praktikum 2: Stream Controllers dan Sinks
+
+### Langkah 1: Mengedit file `stream.dart`
+
+Melakukan impor dengan mengetik kode ini.
+
+```dart
+import 'dart:async';
+```
+
+### Langkah 2: Menambahkan class `NumberStream`
+
+Menambahkan class baru seperti berikut.
+
+```dart
+class NumberStream {
+  
+}
+```
+
+### Langkah 3: Menambahkan `StreamController`
+
+Di dalam class `NumberStream` membuat variabel seperti berikut.
+
+```dart
+final StreamController<int> controller = StreamController<int>();
+```
+
+### Langkah 4: Menambahkan method `addNumberToSink`
+
+Membuat method seperti berikut.
+
+```dart
+void addNumberToSink(int newNumber) {
+  controller.sink.add(newNumber);
+}
+```
+
+### Langkah 5: Menambahkan method close()
+
+Menambahkan method seperti berikut.
+
+```dart
+close() {
+  controller.close();
+}
+```
+
+### Langkah 6: Menambahkan import pada `main.dart`
+
+Mengetik kode import seperti berikut.
+
+```dart
+import 'dart:async';
+import 'dart:math';
+```
+
+### Langkah 7: Menambahkan variabel
+
+Di dalam class `_StreamHomePageState`, menambahkan variabel berikut.
+
+```dart
+int lastNumber = 0;
+late StreamController numberStreamController;
+late NumberStream numberStream;
+```
+
+### Langkah 8: Mengubah method `initState()`
+
+Mengubah kode pada method `initState()` seperti berikut.
+
+```dart
+@override
+void initState() {
+  numberStream = NumberStream();
+  numberStreamController = numberStream.controller;
+  Stream stream = numberStreamController.stream;
+  stream.listen((event) {
+    setState(() {
+      lastNumber = event;
+    });
+  });
+  super.initState();
+}
+```
+
+### Langkah 9: Mengubah method `dispose()`
+
+Mengubah kode pada method `dispose()` seperti berikut.
+
+```dart
+@override
+void dispose() {
+  numberStreamController.close();
+  super.dispose();
+}
+```
+
+### Langkah 10: Menambahkan method `addRandomNumber()`
+
+```dart
+void addRandomNumber() {
+  Random random = Random();
+  int myNum = random.nextInt(10);
+  numberStream.addNumberToSink(myNum);
+}
+```
+
+### Langkah 11: Mengubah method `build()`
+
+```dart
+body: SizedBox(
+  width: double.infinity,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text(lastNumber.toString()),
+      ElevatedButton(
+        onPressed: () => addRandomNumber(),
+        child: Text('New Random Number'),
+      ),
+    ],
+  ),
+),
+```
+
+### Langkah 12: Running Aplikasi
+
+Lakukan running pada aplikasi Flutter.
+
+**Output yang dihasilkan**:
+
+
+#### Soal 6
+
+> - Jelaskan maksud kode langkah 8 dan 10 tersebut!
+>   
+>   **Langkah 8**
+>
+>   Melakukan inisialisasi stream dengan membuat objek `NumberStream`, mengambil `StreamController`, dan mendapatkan stream dari controller tersebut. Stream kemudian dipantau menggunakan `listen()`, sehingga setiap event (angka baru) yang dikirimkan stream akan diperbarui ke variabel lastNumber melalui `setState()`. Hasilnya, UI menampilkan angka terbaru setiap kali ada data masuk dari stream.
+>
+>   **Langkah 10**
+>   
+>   method `addRandomNumber()` menghasilkan angka acak dari 0–9 menggunakan `Random().nextInt(10)` dan mengirimkannya ke stream menggunakan `addNumberToSink()`. Setiap angka yang dikirim akan ditangkap oleh listener pada langkah 8 sehingga tampil langsung di layar aplikasi.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum2.gif" alt="Gif Output Praktikum 2" width="500">
+
+### Langkah 13: Mengubah file `stream.dart`
+
+Menambahkan method berikut ini.
+
+```dart
+addError() {
+  controller.sink.addError('error');
+}
+```
+
+### Langkah 14: Buka main.dart
+
+Menambahkan method `onError` di dalam class `StreamHomePageState` pada method listen di fungsi `initState()` seperti berikut ini.
+
+```dart
+stream.listen((event) {
+  setState(() {
+    lastNumber = event;
+  });
+}).onError((error) {
+  setState(() {
+    lastNumber = -1;
+  });
+});
+```
+
+### Langkah 15: Mengubah method `addRandomNumber()`
+
+Melakukan comment pada dua baris kode berikut, lalu mengetik kode seperti berikut ini.
+
+```dart
+void addRandomNumber() {
+  Random random = Random();
+  //int myNum = random.nextInt(10);
+  //numberStream.addNumberToSink(myNum);
+  numberStream.addError();
+}
+```
+
+#### Soal 7
+
+> - Jelaskan maksud kode langkah 13 sampai 15 tersebut!
+>
+>   **Langkah 13**
+>
+>   Menambahkan method `addError()` yang mengirim error ke stream menggunakan `controller.sink.addError('error')`. Hal tersebut digunakan untuk menguji bahwa stream dapat menghasilkan event error selain event data biasa.
+>
+>   **Langkah 14**
+>
+>   listener ditambahkan penanganan error melalui `onError`. Ketika stream mengirim event error, nilai lastNumber diubah menjadi -1 sehingga UI dapat menampilkan indikator bahwa terjadi error pada stream.
+>
+>   **Langkah 15**
+>
+>   Mengubah fungsi `addRandomNumber()` sehingga tombol tidak lagi mengirim angka acak, tetapi memicu error melalui `addError()`. Dengan demikian, setiap penekanan tombol menghasilkan event error yang langsung ditangani oleh `onError` dan ditampilkan sebagai nilai -1 pada UI.
+>
+> - Kembalikan kode seperti semula pada Langkah 15, comment addError() agar Anda dapat melanjutkan ke praktikum 3 berikutnya.
+>   ```dart
+>   void addRandomNumber() {
+>     Random random = Random();
+>     int myNum = random.nextInt(10);
+>     numberStream.addNumberToSink(myNum);
+>     // numberStream.addError();
+>   } 
+>   ```
