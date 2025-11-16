@@ -447,3 +447,72 @@ void addRandomNumber() {
 >     // numberStream.addError();
 >   } 
 >   ```
+
+---
+
+## Praktikum 3: Injeksi Data ke Streams
+
+### Langkah 1: Mengubah kode `main.dart`
+
+Menambahkan variabel baru di dalam class `_StreamHomePageState`.
+
+```dart
+late StreamTransformer transformer;
+```
+
+### Langkah 2: Menambahkan kode pada `initState`
+
+Menambahkan kode berikut ke `initState`.
+
+```dart
+transformer = StreamTransformer<int, int>.fromHandlers(
+  handleData: (value, sink) {
+    sink.add(value * 10);
+  },
+  handleError: (error, trace, sink) {
+    sink.add(-1);
+  },
+  handleDone: (sink) => sink.close(),
+);
+```
+
+### Langkah 3: Mengubah kode pada `initState`
+
+Mengubah kode menjadi seperti berikut.
+
+```dart
+stream.transform(transformer).listen((event) {
+  setState(() {
+    lastNumber = event;
+  });
+}).onError((error) {
+  setState(() {
+    lastNumber = -1;
+  });
+});
+super.initState();
+```
+
+### Langkah 4: Running Aplikasi
+
+Melakukan running pada aplikasi Flutter
+
+#### Soal 8
+
+> - Jelaskan maksud kode langkah 1-3 tersebut!
+>
+>   **Langkah 1**
+>
+>   Variabel `StreamTransformer` ditambahkan untuk menampung transformasi yang akan diterapkan pada aliran data. Transformer tersebut memungkinkan setiap data dalam stream diproses atau dimodifikasi terlebih dahulu sebelum diterima oleh listener.
+>
+>   **Langkah 2**
+>
+>   Transformer didefinisikan menggunakan` StreamTransformer.fromHandlers`. Bagian `handleData` mengubah setiap nilai yang masuk dengan mengalikannya 10, `handleError` mengubah error menjadi nilai -1, dan `handleDone` menutup aliran. Transformer berperan sebagai filter dan pemroses data sebelum sampai ke UI.
+>
+>   **Langkah 3**
+>
+>   Stream dihubungkan dengan transformer melalui `stream.transform(transformer)`, sehingga setiap data yang masuk sudah dalam bentuk hasil transformasi. Listener kemudian menerima data yang telah diproses dan memperbarui UI menggunakan `setState()`, sementara error ditampilkan sebagai -1 melalui `onError`.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum3.gif" alt="Gif Output Praktikum 3" width="500">
