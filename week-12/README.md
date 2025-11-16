@@ -729,4 +729,156 @@ Menekan button 'New Random Number' beberapa kali, maka akan tampil teks angka te
 >
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
->   <img src="./media/praktikum2.gif" alt="Gif Output Praktikum 2" width="500">
+>   <img src="./media/praktikum5.gif" alt="Gif Output Praktikum 5" width="500">
+
+---
+
+## Praktikum 6: StreamBuilder
+
+### Langkah 1: Membuat Project Baru
+
+Membuat sebuah project flutter baru dengan nama streambuilder_aditya.
+
+![Praktikum 6 langkah 1](./media/praktikum6.1.png)
+
+### Langkah 2: Membuat file baru `stream.dart`
+
+Mengetik kode seperti berikut.
+
+```dart
+class NumberStream {
+
+}
+```
+
+### Langkah 3: Tetap di file `stream.dart`
+
+Mengetik kode seperti berikut.
+
+```dart
+import 'dart:math';
+
+class NumberStream {
+  Stream<int> getNumbers() async* {
+    yield* Stream.periodic(const Duration(seconds: 1), (int t) {
+      Random random = Random();
+      int myNum = random.nextInt(10);
+      return myNum;
+    });
+  }
+}
+```
+
+### Langkah 4: Mengubah `main.dart`
+
+Mengetik kode seperti berikut.
+
+```dart
+import 'package:flutter/material.dart';
+import 'stream.dart';
+import 'dart:async';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Stream - Atadewa',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
+      home: const StreamHomePage(),
+    );
+  }
+}
+
+class StreamHomePage extends StatefulWidget {
+  const StreamHomePage({super.key});
+
+  @override
+  State<StreamHomePage> createState() => _StreamHomePageState();
+}
+
+class _StreamHomePageState extends State<StreamHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Stream - Atadewa'),
+      ),
+      body: Container(
+        
+      ),
+    );
+  }
+}
+```
+
+### Langkah 5: Menambahkan variabel
+
+Di dalam class `_StreamHomePageState`, menambahkan variabel seperti berikut.
+
+```dart
+late Stream<int> numberStream;
+```
+
+### Langkah 6: Mengubah `initState()`
+
+Mengetik kode seperti berikut.
+
+```dart
+@override
+void initState() {
+  numberStream = NumberStream().getNumbers();
+  super.initState();
+}
+```
+
+### Langkah 7: Mengubah method `build()`
+
+```dart
+body: StreamBuilder(
+  stream: numberStream,
+  initialData: 0,
+  builder: (context, snapshot) {
+    if (snapshot.hasError) {
+      print('Error!');
+    }
+    if (snapshot.hasData) {
+      return Center(
+        child: Text(
+          snapshot.data.toString(),
+          style: const TextStyle(fontSize: 96),
+        )
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  },
+),
+```
+
+### Langkah 8: Running Aplikasi
+
+Melakukan running pada aplikasi Flutter. Hasilnya, setiap detik akan tampil angka baru seperti berikut.
+
+#### Soal 12
+
+> - Jelaskan maksud kode pada langkah 3 dan 7 !
+>
+>   **Langkah 3**
+>
+>   `getNumbers()` membuat stream yang menghasilkan angka acak setiap detik menggunakan `Stream.periodic`. Setiap tick, dibuat `Random()` lalu dipilih angka 0–9, dan `yield*` meneruskan seluruh event dari periodic stream tersebut sebagai output. Hasilnya adalah stream yang terus mengirim angka baru secara berkala.
+>
+>   **Langkah 7**
+>
+>   `StreamBuilder` memantau stream dan membangun ulang UI setiap kali ada data baru. `initialData` memberi nilai awal, dan `snapshot.data` menampilkan angka terbaru yang diterima dari stream. Jika ada error, snapshot menandainya, dan UI tetap aman. Hasilnya, angka di layar otomatis berubah mengikuti event stream.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum6.gif" alt="Gif Output Praktikum 6" width="500">
