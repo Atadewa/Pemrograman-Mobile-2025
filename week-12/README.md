@@ -647,3 +647,86 @@ Terdapat pesan di Debug Console seperti berikut.
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 >   <img src="./media/praktikum4.gif" alt="Gif Output Praktikum 4" width="500">
+
+---
+
+## Praktikum 5: Multiple Stream Subscriptions
+
+### Langkah 1: Mengubah file `main.dart`
+
+Menambahkan variabel berikut di class `_StreamHomePageState`.
+
+```dart
+late StreamSubscription subscription2;
+String values = '';
+```
+
+### Langkah 2: Mengubah `initState()`
+
+Mengubah menjadi kode seperti berikut.
+
+```dart
+subscription = stream.listen((event) {
+  setState(() {
+    values += '$event - ';
+  });
+});
+
+subscription2 = stream.listen((event) {
+  setState(() {
+    values += '$event - ';
+  });
+});
+```
+
+### Langkah 3: Running Aplikasi
+
+Melakukan running pada aplikasi Flutter, maka akan tampil error seperti gambar berikut.
+
+![praktikum 5 langkah 3](./media/praktikum5.1.png)
+
+#### Soal 10
+
+> Jelaskan mengapa error itu bisa terjadi ?
+>
+> Error terjadi karena stream default dari `StreamController` hanya mendukung **single subscription**. Saat dua listener (`subscription` dan `subscription2`) mencoba mendengarkan stream yang sama, stream menolak listener kedua dan memunculkan error “Bad state: Stream has already been listened to”. Stream hanya bisa multi-subscriber jika diubah menjadi broadcast stream.
+
+### Langkah 4: Set broadcast stream
+
+Mengetik kode seperti berikut pada method `initState()`
+
+```dart
+void initState() {
+  numberStream = NumberStream();
+  numberStreamController = numberStream.controller;
+  Stream stream = numberStreamController.stream.asBroadcastStream();
+  ...
+}
+```
+
+### Langkah 5: Mengubah method `build()`
+
+Menambahkan text seperti berikut.
+
+```dart
+child: Column(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    Text(values),
+    ...
+```
+
+### Langkah 6: Running Aplikasi
+
+Menekan button 'New Random Number' beberapa kali, maka akan tampil teks angka terus bertambah.
+
+#### Soal 11
+
+> - Jelaskan mengapa hal itu bisa terjadi ?
+>
+>   Setelah stream diubah menjadi **broadcast** menggunakan `asBroadcastStream()`, stream dapat memiliki lebih dari satu listener. Setiap event yang dikirim stream akan diterima oleh **dua listener**, sehingga setiap angka ditambahkan dua kali ke variabel `values`. Hasilnya, teks angka di layar akan semakin panjang setiap kali tombol ditekan.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum2.gif" alt="Gif Output Praktikum 2" width="500">
