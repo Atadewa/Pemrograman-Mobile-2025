@@ -882,3 +882,172 @@ Melakukan running pada aplikasi Flutter. Hasilnya, setiap detik akan tampil angk
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 >   <img src="./media/praktikum6.gif" alt="Gif Output Praktikum 6" width="500">
+
+---
+
+## Praktikum 7: BLoC Pattern
+
+### Langkah 1: Membuat Project baru
+
+Membuat sebuah project flutter baru dengan nama bloc_random_aditya.
+
+![Praktikum 7 langkah 1](./media/praktikum7.1.png)
+
+### Langkah 2: Membuat file `random_bloc.dart`
+
+Menambahkan kode import berikut ini.
+
+```dart
+import 'dart:async';
+import 'dart:math';
+```
+
+### Langkah 3: Membuat class `RandomNumberBloc()`
+
+```dart
+class RandomNumberBloc {
+
+}
+```
+
+### Langkah 4: Membuat variabel `StreamController`
+
+Di dalam class `RandomNumberBloc()` ketik variabel berikut ini
+
+```dart
+// StreamController for input events
+final _generateRandomController = StreamController<void>();
+// StreamController for output
+final _randomNumberController = StreamController<int>();
+
+// Input Sink
+Sink<void> get generateRandom => _generateRandomController.sink;
+// Output Stream.
+Stream<int> get randomNumber => _randomNumberController.stream;
+
+_secondsStreamController.sink;
+```
+
+### Langkah 5: Membuat constructor
+
+```dart
+RandomNumberBloc() {
+  _generateRandomController.stream.listen((_) {
+    final random = Random().nextInt(10);
+    _randomNumberController.sink.add(random);
+  });
+}
+```
+
+### Langkah 6: Membuat method `dispose()`
+
+```dart
+void dispose() {
+  _generateRandomController.close();
+  _randomNumberController.close();
+}
+```
+
+### Langkah 7: Mengubah kode `main.dart`
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo - Atadewa',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const RandomScreen(),
+    );
+  }
+}
+```
+
+### Langkah 8: Membuat file baru `random_screen.dart`
+
+Di dalam folder lib project, Membuat file baru `random_screen.dart`.
+
+### Langkah 9: Melakukan import material dan `random_bloc.dart`
+
+Mengetik kode seperti berikut di file baru `random_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'random_bloc.dart';
+```
+
+### Langkah 10: Membuat StatefulWidget RandomScreen
+
+Membuat StatefulWidget RandomScreen di dalam file `random_screen.dart`
+
+### Langkah 11: Membuat variabel
+
+Membuat variabel seperti berikut di dalam class `_RandomScreenState`
+
+```dart
+final _bloc = RandomNumberBloc();
+```
+
+### Langkah 12: Membuat method `dispose()`
+
+Mengetik kode berikut di dalam class `_StreamHomePageState`.
+
+```dart
+@override
+void dispose() {
+  _bloc.dispose();
+  super.dispose();
+}
+```
+
+### Langkah 13: Mengubah method `build()`
+
+Mengetik kode berikut di dalam class `_StreamHomePageState`
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: const Text('Random Number')),
+    body: Center(
+      child: StreamBuilder<int>(
+        stream: _bloc.randomNumber,
+        initialData: 0,
+        builder: (context, snapshot) {
+          return Text(
+            'Random Number: ${snapshot.data}',
+            style: const TextStyle(fontSize: 24),
+          );
+        },
+      ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () => _bloc.generateRandom.add(null),
+      child: const Icon(Icons.refresh),
+    ),
+  );
+}
+```
+
+### Langkah 14: Running Aplikasi
+
+Melakjukan running aplikasi, maka terlihat angka acak antara angka 0 sampai 9 setiap kali menekan tombol `FloactingActionButton`.
+
+#### Soal 13
+
+> - Jelaskan maksud praktikum ini! Dimanakah letak konsep pola BLoC-nya?
+>
+>   Praktikum ini bertujuan untuk menerapkan pola **BLoC (Business Logic Component)**, yaitu memisahkan logika bisnis dari tampilan UI. Proses menghasilkan angka acak tidak dilakukan di UI, tetapi dikelola di dalam class `RandomNumberBloc`. UI hanya mengirim event melalui **input sink** (`generateRandom`) dan menerima hasil melalui **output stream** (`randomNumber`) yang kemudian ditampilkan menggunakan `StreamBuilder`.  
+>
+>   Konsep BLoC terlihat pada tiga bagian utama:
+>     - (1) **Input Sink** sebagai penerima event dari UI
+>     - (2) bagian **Business Logic** di constructor BLoC yang memproses event dan menghasilkan angka acak
+>     - (3) **Output Stream** yang mengirim data hasil proses kembali ke UI untuk ditampilkan. Hasilnya, UI tetap bersih dan hanya berfungsi sebagai pihak yang menampilkan data.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum7.gif" alt="Gif Output Praktikum 7" width="500">
