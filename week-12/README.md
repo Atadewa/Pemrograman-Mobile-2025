@@ -516,3 +516,134 @@ Melakukan running pada aplikasi Flutter
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 >   <img src="./media/praktikum3.gif" alt="Gif Output Praktikum 3" width="500">
+
+---
+
+## Praktikum 4: Subscribe ke Stream Events
+
+### Langkah 1: Menambahkan variabel
+
+Menambahkan variabel berikut di class `_StreamHomePageState`
+
+```dart
+late StreamSubscription subscription;
+```
+
+### Langkah 2: Mengubah `initState()`
+
+Mengubah kode seperti berikut ini.
+
+```dart
+@override
+void initState() {
+  numberStream = NumberStream();
+  numberStreamController = numberStream.controller;
+  Stream stream = numberStreamController.stream;
+  subscription = stream.listen((event) {
+    setState(() {
+      lastNumber = event;
+    });
+  });
+  super.initState();
+}
+```
+
+### Langkah 3: Tetap di `initState()`
+
+Menambahkan kode berikut ini.
+
+```dart
+subscription.onError((error) {
+  setState(() {
+    lastNumber = -1;
+  });
+});
+```
+
+### Langkah 4: Menambahkan properti `onDone()`
+
+Menambahkan kode berikut setelah `onError`
+
+```dart
+subscription.onDone(() {
+  print('OnDone was called');
+});
+```
+
+### Langkah 5: Menambahkan method baru
+
+Menambahkan method berikut di dalam class `_StreamHomePageState`
+
+```dart
+void stopStream() {
+  numberStreamController.close();
+}
+```
+
+### Langkah 6: Pindah ke method `dispose()`
+
+Menambahkan kode berikut di dalam method `dispose()`.
+
+```dart
+subscription.cancel();
+```
+
+### Langkah 7: Pindah ke method `build()`
+
+Menambahkan button kedua dengan kode seperti berikut.
+
+```dart
+ElevatedButton(
+  onPressed: () => stopStream(),
+  child: const Text('Stop Subscription'),
+)
+```
+
+### Langkah 8: Mengubah method `addRandomNumber()`
+
+Mengubah kode seperti berikut ini.
+
+```dart
+void addRandomNumber() {
+  Random random = Random();
+  int myNum = random.nextInt(10);
+  if (!numberStreamController.isClosed) {
+    numberStream.addNumberToSink(myNum);
+  } else {
+    setState(() {
+      lastNumber = -1;
+    });
+  }
+}
+```
+
+### Langkah 9: Running Aplikasi
+
+Melakukan running pada aplikasi Flutter, akan menampilkan dua button.
+
+
+### Langkah 10: Menekan button ‘Stop Subscription'
+
+Terdapat pesan di Debug Console seperti berikut.
+
+![Praktikum 4 langkah 10](./media/praktikum4.1.png)
+
+### Soal 9
+
+> - Jelaskan maksud kode langkah 2, 6 dan 8 tersebut!
+>
+>   **Langkah 2**
+>
+>   Stream di-subscribe menggunakan `stream.listen()`, dan setiap data baru yang diterima langsung diperbarui ke variabel `lastNumber` melalui `setState()`. Dengan menggunakan `StreamSubscription`, proses pendengaran stream bisa dikontrol, misalnya diberi handler error atau dihentikan sewaktu-waktu.
+>
+>   **Langkah 6**
+>
+>   `subscription.cancel()` digunakan untuk menghentikan pendengaran stream saat widget dihancurkan. Hal tersebut mencegah widget menerima event lagi dan menghindari potensi error.
+>
+>   **Langkah 8**
+>
+>   Method `addRandomNumber()` hanya mengirim angka ke stream jika controller belum ditutup (`!isClosed`). Jika stream sudah dihentikan, UI menampilkan nilai -1. Hal tersebut memastikan data tidak dikirim ke stream yang sudah tidak aktif agar tidak terjadi error.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   <img src="./media/praktikum4.gif" alt="Gif Output Praktikum 4" width="500">
