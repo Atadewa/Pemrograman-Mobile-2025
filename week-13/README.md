@@ -438,3 +438,63 @@ Jalankan aplikasi. Sekarang data yang tidak konsisten telah ditangani dengan bai
 > Capture hasil running aplikasi Anda, kemudian impor ke laporan praktikum Anda!
 >
 > ![soal 4](./media/praktikum2.2.jpg)
+
+---
+
+## Praktikum 3: Menangani Error JSON
+
+### Langkah 1: Buka pizza.dart dan Buat Konstanta
+
+Di bagian atas file pizza.dart, di luar class Pizza, deklarasikan konstanta untuk setiap kunci JSON.
+
+```dart
+const keyId = 'id';
+const keyName = 'pizzaName';
+const keyDescription = 'description';
+const keyPrice = 'price';
+const keyImage = 'imageUrl';
+```
+
+### Langkah 2: Perbarui fromJson() menggunakan Konstanta
+
+Di constructor Pizza.fromJson, ganti semua string literal kunci JSON (misalnya 'id') dengan konstanta yang sesuai (keyId).
+
+```dart
+Pizza.fromJson(Map<String, dynamic> json) {
+  id = int.tryParse(json[keyId].toString()) ?? 0;
+  pizzaName = json[keyName] != null ? json[keyName].toString() : 'No name';
+  description = (json[keyDescription] != null) ? json[keyDescription].toString() : '';
+  price = double.tryParse(json[keyPrice].toString()) ?? 0;
+  imageUrl = json[keyImage] ?? '';
+}
+```
+
+### Langkah 3: Perbarui toJson() menggunakan Konstanta
+
+Perbarui juga method toJson() agar menggunakan konstanta yang sama.
+
+```dart
+Map<String, dynamic> toJson() {
+  return {
+    keyId: id,
+    keyName: pizzaName,
+    keyDescription: description,
+    keyPrice: price,
+    keyImage: imageUrl,
+  };
+}
+```
+
+### Langkah 4: Run
+
+Jalankan aplikasi. Tidak akan ada perubahan visual, tetapi kode Anda kini lebih safe dan maintainable.
+
+#### Soal 5
+
+> - Jelaskan maksud kode lebih safe dan maintainable!
+>
+>   Kode menjadi lebih *safe* dan *maintainable* karena penggunaan konstanta untuk key JSON mengurangi risiko salah ketik (typo) dan mencegah error saat proses parsing data, serta mempermudah perawatan kode jika ada perubahan nama key pada API, cukup diperbarui pada satu tempat (konstanta) tanpa harus mengubah banyak bagian kode sehingga lebih aman dan mudah dikembangkan ke depannya.
+>
+> - Capture hasil praktikum Anda dan lampirkan di README.
+>   
+>   ![soal 5](./media/praktikum1.3.jpg)
