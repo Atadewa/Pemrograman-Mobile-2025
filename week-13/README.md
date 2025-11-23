@@ -498,3 +498,153 @@ Jalankan aplikasi. Tidak akan ada perubahan visual, tetapi kode Anda kini lebih 
 > - Capture hasil praktikum Anda dan lampirkan di README.
 >   
 >   ![soal 5](./media/praktikum1.3.jpg)
+
+---
+
+## Praktikum 4: SharedPreferences
+
+### Langkah 1: Tambahkan Dependensi
+
+Di Terminal, tambahkan package shared_preferences.
+
+```dart
+flutter pub add shared_preferences
+```
+
+### Langkah 2: Install Dependensi
+
+Jalankan flutter pub get jika editor Anda tidak melakukannya secara otomatis.
+
+### Langkah 3: Lakukan Import
+
+Di file main.dart, tambahkan import untuk shared_preferences.
+
+```dart
+import 'package:shared_preferences/shared_preferences.dart';
+```
+
+### Langkah 4: Tambahkan Variabel appCounter
+
+Di dalam class _MyHomePageState (atau State class yang Anda gunakan), deklarasikan variabel appCounter.
+
+```dart
+  int appCounter = 0;
+```
+
+### Langkah 5: Buat Method readAndWritePreference
+
+Buat method asinkron readAndWritePreference().
+
+```dart
+  Future<void> readAndWritePreference() async {}
+```
+
+### Langkah 6: Dapatkan Instance SharedPreferences
+
+Di dalam method tersebut, dapatkan instance SharedPreferences. Perlu diingat bahwa ini adalah operasi asinkron, jadi gunakan await.
+
+```dart
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+```
+
+### Langkah 7: Baca, Cek Null, dan Increment Counter
+
+Baca nilai appCounter dari storage. Gunakan null coalescing (?? 0) untuk memastikan nilai default 0 jika data belum ada. Kemudian increment nilai tersebut.
+
+```dart
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+```
+
+### Langkah 8: Simpan Nilai Baru
+
+Simpan nilai appCounter yang sudah di-increment kembali ke storage menggunakan prefs.setInt().
+
+```dart
+    await prefs.setInt('appCounter', appCounter);
+```
+
+### Langkah 9: Perbarui State
+
+Panggil setState() untuk memperbarui UI dengan nilai baru appCounter.
+
+```dart
+    setState(() {
+      appCounter = appCounter;
+    });
+  }
+```
+
+### Langkah 10: Panggil di initState()
+
+Panggil readAndWritePreference() di initState() agar penghitung dibaca saat aplikasi pertama kali dibuka.
+
+```dart
+  void initState() {
+    super.initState();
+    readAndWritePreference();
+  }
+```
+
+### Langkah 11: Perbarui Tampilan (body)
+
+Ganti body Scaffold Anda dengan tata letak yang menampilkan hitungan dan tombol 'Reset counter'.
+
+```dart
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'You have opened the app $appCounter times.',
+              style: const TextStyle(fontSize: 18),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                deletePreference();
+              },
+              child: const Text('Reset Counter'),
+            ),
+          ],
+```
+
+### Langkah 12: Run
+
+Aplikasi sekarang akan menampilkan "You have opened the app 1 times" (jika ini pembukaan pertama).
+
+![praktikum 4 langkah 12](./media/praktikum4.1.jpg)
+
+### Langkah 13: Buat Method deletePreference()
+
+Tambahkan method asinkron deletePreference() yang berfungsi untuk menghapus data menggunakan prefs.clear().
+
+```dart
+  Future<void> deletePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+  }
+```
+
+### Langkah 14: Panggil deletePreference()
+
+Hubungkan deletePreference() ke tombol 'Reset counter'.
+
+```dart
+    onPressed: () {
+      deletePreference();
+    },
+    child: const Text('Reset Counter'),
+```
+
+### Langkah 15: Run
+
+Jalankan aplikasi. Tombol reset sekarang akan berfungsi, menghapus semua pasangan kunci-nilai dan mereset hitungan.
+
+#### Soal 6
+
+> Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+> ![soal 6](./media/praktikum4.2.jpg)
