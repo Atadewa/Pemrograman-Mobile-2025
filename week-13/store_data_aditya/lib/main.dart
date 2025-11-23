@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,94 +30,73 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String documentPath = '';
-  String tempPath = '';
-  int appCounter = 0;
-  late File myFile;
-  String fileText = '';
-
-  Future<bool> writeFile() async {
-    try {
-      await myFile.writeAsString('Aditya Atadewa - 2341720174');
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> readFile() async {
-    try {
-      String fileContent = await myFile.readAsString();
-      setState(() {
-        fileText = fileContent;
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<void> readAndWritePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    appCounter = prefs.getInt('appCounter') ?? 0;
-    appCounter++;
-    await prefs.setInt('appCounter', appCounter);
-    setState(() {
-      appCounter = appCounter;
-    });
-  }
-
-  Future getPaths() async {
-    final docDir = await getApplicationDocumentsDirectory();
-    final tempDir = await getTemporaryDirectory();
-    setState(() {
-      documentPath = docDir.path;
-      tempPath = tempDir.path;
-    });
-  }
+  final pwdController = TextEditingController();
+  final storage = const FlutterSecureStorage();
+  final String myKey = "myPass";
+  String myPass = '';
 
   @override
-  void initState() {
-    super.initState();
-    readAndWritePreference();
-    getPaths().then((_) {
-      myFile = File('$documentPath/pizzas.txt');
-      writeFile();
-    });
+  void dispose() {
+    pwdController.dispose();
+    super.dispose();
+  }
+
+  Future<void> writeToSecureStorage() async {
+    await storage.write(key: myKey, value: pwdController.text);
+  }
+
+  Future<String> readFromSecureStorage() async {
+    return await storage.read(key: myKey) ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Path Provider - Atadewa'),
+        title: const Text('Secure Storage - Atadewa'),
         backgroundColor: Colors.tealAccent.shade700,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Doc Path:\n$documentPath',
-              textAlign: TextAlign.center, 
-            ),
-            const Divider(),
-            Text(
-              'Temp Path:\n$tempPath',
-              textAlign: TextAlign.center,
-            ),
-            const Divider(),
-            ElevatedButton(
-              onPressed: () => readFile(),
-              child: const Text('Read File'),
-            ),
-            Text(
-              fileText,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.lightBlue,
+            TextField(
+              controller: pwdController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                fillColor: Colors.white,
+                filled: true,
               ),
+            ),
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                writeToSecureStorage();
+                pwdController.clear();
+              },
+              child: const Text('Save Value'),
+            ),
+
+            const SizedBox(height: 10),
+
+            ElevatedButton(
+              onPressed: () async {
+                String value = await readFromSecureStorage();
+                setState(() {
+                  myPass = value;
+                });
+              },
+              child: const Text('Read Value'),
+            ),
+
+            const SizedBox(height: 20),
+
+            Text(
+              "Stored Value:\n$myPass",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
