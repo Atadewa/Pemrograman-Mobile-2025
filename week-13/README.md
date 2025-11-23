@@ -648,3 +648,100 @@ Jalankan aplikasi. Tombol reset sekarang akan berfungsi, menghapus semua pasanga
 > Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 > ![soal 6](./media/praktikum4.2.jpg)
+
+---
+
+## Praktikum 5: Akses filesystem dengan path_provider
+
+### Langkah 1: Tambahkan Dependensi
+
+Tambahkan package path_provider melalui Terminal.
+
+```dart
+flutter pub add path_provider
+```
+
+### Langkah 2: Lakukan Import
+
+Di file main.dart, tambahkan import untuk path_provider.
+
+```dart
+import 'package:path_provider/path_provider.dart';
+```
+
+### Langkah 3: Tambahkan Variabel Path State
+
+Di State class Anda, tambahkan variabel untuk menyimpan jalur direktori dokumen dan temporer.
+
+```dart
+  String documentPath = '';
+  String tempPath = '';
+```
+
+### Langkah 4: Buat Method getPaths()
+
+Buat method asinkron getPaths() yang menggunakan getApplicationDocumentsDirectory() dan getTemporaryDirectory() untuk mengambil jalur sistem file yang tepat, lalu perbarui state.
+
+```dart
+  Future getPaths() async {
+    final docDir = await getApplicationDocumentsDirectory();
+    final tempDir = await getTemporaryDirectory();
+    setState(() {
+      documentPath = docDir.path;
+      tempPath = tempDir.path;
+    });
+  }
+```
+
+### Langkah 5: Panggil getPaths() di initState()
+
+Panggil getPaths() di initState().
+
+```dart
+@override
+void initState() {
+  super.initState();
+  getPaths();
+}
+```
+### Langkah 6: Perbarui Tampilan
+
+Perbarui body Scaffold untuk menampilkan kedua jalur yang telah diambil.
+
+```dart
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('JSON - Atadewa'),
+        backgroundColor: Colors.tealAccent.shade700,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Doc Path:\n$documentPath',
+              textAlign: TextAlign.center, 
+            ),
+            const Divider(),
+            Text(
+              'Temp Path:\n$tempPath',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+```
+
+### Langkah 7: Run
+
+Jalankan aplikasi. Anda akan melihat path absolut ke direktori dokumen dan cache aplikasi di perangkat Anda.
+
+#### Soal 7
+
+> Capture hasil praktikum Anda dan lampirkan di README.
+>
+> ![soal 7](./media/praktikum5.1.jpg)
