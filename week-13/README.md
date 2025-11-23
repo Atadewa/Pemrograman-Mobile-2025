@@ -865,3 +865,107 @@ Jalankan aplikasi. Setelah menekan tombol 'Read File', konten yang ditulis (Marg
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
 >   ![soal 8](./media/praktikum6.1.jpg)
+
+---
+
+## Praktikum 7: Menyimpan data dengan enkripsi/dekripsi
+
+### Langkah 1: Tambahkan Dependensi
+
+Tambahkan package flutter_secure_storage melalui Terminal.
+
+```dart
+flutter pub add flutter_secure_storage
+```
+
+### Langkah 2: Lakukan Import
+
+Di main.dart, impor package yang diperlukan.
+
+```dart
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+```
+
+### Langkah 3: Tambahkan Variabel dan Controller
+
+Di State class (_MyHomePageState), tambahkan TextEditingController dan variabel untuk menyimpan kata sandi yang dibaca.
+
+```dart
+final pwdController = TextEditingController();
+String myPass = '';
+```
+
+### Langkah 4: Inisialisasi Secure Storage
+
+Di State class, inisialisasi FlutterSecureStorage dan tentukan kuncinya.
+
+```dart
+  final storage = const FlutterSecureStorage();
+  final String myKey = "myPass";
+```
+
+### Langkah 5: Buat Method writeToSecureStorage()
+
+Buat method asinkron untuk menulis data dari pwdController ke secure storage.
+
+```dart
+  Future<void> writeToSecureStorage() async {
+    await storage.write(key: myKey, value: pwdController.text);
+  }
+```
+
+### Langkah 6: Buat Method readFromSecureStorage()
+
+Buat method asinkron untuk membaca data dari secure storage.
+
+```dart
+  Future<String> readFromSecureStorage() async {
+    return await storage.read(key: myKey) ?? "";
+  }
+```
+
+### Langkah 7: Edit build() untuk UI dan Logic
+
+Perbarui method build() untuk menyertakan TextField dan dua ElevatedButton (Save Value dan Read Value). Hubungkan method save ke tombol Save Value.
+
+```dart
+// Di dalam body: Column children:
+TextField(
+  controller: pwdController,
+),
+ElevatedButton(child: const Text('Save Value'), onPressed: () {
+  writeToSecureStorage();
+}),
+// ...
+```
+
+### Langkah 8: Hubungkan Read ke Tombol
+
+Hubungkan method read ke tombol Read Value, perbarui myPass dan UI melalui setState().
+
+```dart
+    ElevatedButton(
+      onPressed: () {
+        writeToSecureStorage();
+        pwdController.clear();
+      },
+      child: const Text('Save Value'),
+    ),
+
+    const SizedBox(height: 10),
+
+    ElevatedButton(
+      onPressed: () async {
+        String value = await readFromSecureStorage();
+        setState(() {
+          myPass = value;
+        });
+```
+
+### Langkah 9: Run
+
+Jalankan aplikasi. Masukkan teks, simpan, lalu baca kembali. Teks tersebut seharusnya ditampilkan, menandakan data telah disimpan dan diambil dengan aman.
+
+#### Soal 9
+> Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+> ![soal 9](./media/praktikum7.1.gif)
