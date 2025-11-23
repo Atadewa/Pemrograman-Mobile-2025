@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<Pizza>> readJsonFile() async {
     String myString = await DefaultAssetBundle.of(
       context,
-    ).loadString('assets/pizzalist.json');
+    ).loadString('assets/pizzalist_broken.json');
     List pizzaMapList = jsonDecode(myString);
 
     List<Pizza> myPizzas = [];
@@ -72,7 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(myPizzas[index].pizzaName),
-            subtitle: Text(myPizzas[index].description),
+            subtitle: Text(
+              '${myPizzas[index].description} - €${myPizzas[index].price}',
+            ),
           );
         },
       ),
