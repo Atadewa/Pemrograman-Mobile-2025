@@ -20,3 +20,4 @@
 | Week-10    | Dasar State Management | [Praktikum Pertemuan 10](./week-10) |
 | Week-11    | Pemrograman Asynchronous | [Praktikum Pertemuan 11](./week-11) |
 | Week-12    | State Management dengan Streams | [Praktikum Pertemuan 12](./week-12) |
+| Week-13    | Persistensi Data | [Praktikum Pertemuan 13](./week-13) |
