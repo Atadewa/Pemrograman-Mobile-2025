@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -26,30 +27,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int appCounter = 0;
+  String documentPath = '';
+  String tempPath = '';
 
-  Future<void> readAndWritePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    appCounter = prefs.getInt('appCounter') ?? 0;
-    appCounter++;
-    await prefs.setInt('appCounter', appCounter);
+  Future getPaths() async {
+    final docDir = await getApplicationDocumentsDirectory();
+    final tempDir = await getTemporaryDirectory();
     setState(() {
-      appCounter = appCounter;
-    });
-  }
-
-  Future<void> deletePreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    setState(() {
-      appCounter = 0;
+      documentPath = docDir.path;
+      tempPath = tempDir.path;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    readAndWritePreference();
+    getPaths();
   }
 
   @override
@@ -59,19 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('JSON - Atadewa'),
         backgroundColor: Colors.tealAccent.shade700,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'You have opened the app $appCounter times.',
-              style: const TextStyle(fontSize: 18),
+              'Doc Path:\n$documentPath',
+              textAlign: TextAlign.center, 
             ),
-            ElevatedButton(
-              onPressed: () {
-                deletePreference();
-              },
-              child: const Text('Reset Counter'),
+            const Divider(),
+            Text(
+              'Temp Path:\n$tempPath',
+              textAlign: TextAlign.center,
             ),
           ],
         ),
