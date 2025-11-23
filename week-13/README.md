@@ -745,3 +745,123 @@ Jalankan aplikasi. Anda akan melihat path absolut ke direktori dokumen dan cache
 > Capture hasil praktikum Anda dan lampirkan di README.
 >
 > ![soal 7](./media/praktikum5.1.jpg)
+
+---
+
+## Praktikum 6: Akses filesystem dengan direktori
+
+### Langkah 1: Lakukan Import dart:io
+
+Di file main.dart, tambahkan import untuk pustaka dart:io.
+
+```dart
+import 'dart:io';
+```
+
+### Langkah 2: Tambahkan Variabel File dan Text
+
+Di State class, tambahkan variabel myFile (dengan modifier late) dan fileText untuk menyimpan konten yang akan dibaca.
+
+```dart
+  late File myFile;
+  String fileText = '';
+```
+
+### Langkah 3: Buat Method writeFile()
+
+Buat method asinkron writeFile() yang menggunakan myFile.writeAsString() untuk menulis konten ke file. Kata ‘Margherita, Capricciosa, Napoli' silakan Anda ganti dengan Nama Lengkap dan NIM Anda.
+
+```dart
+Future<bool> writeFile() async {
+  try {
+    await myFile.writeAsString('Aditya Atadewa - 2341720174');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+```
+
+### Langkah 4: Inisialisasi File dan Panggil writeFile() di initState()
+
+Perbarui initState(): setelah getPaths() selesai, inisialisasi myFile dengan jalur lengkap di direktori dokumen, dan panggil writeFile().
+
+```dart
+  @override
+  void initState() {
+    super.initState();
+    readAndWritePreference();
+    getPaths().then((_) {
+      myFile = File('$documentPath/pizzas.txt');
+      writeFile();
+    });
+  }
+```
+
+### Langkah 5: Buat Method readFile()
+
+Buat method asinkron readFile() yang menggunakan myFile.readAsString() untuk membaca konten file dan memperbarui fileText melalui setState().
+
+```dart
+  Future<bool> readFile() async {
+    try {
+      String fileContent = await myFile.readAsString();
+      setState(() {
+        fileText = fileContent;
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+```
+
+### Langkah 6: Edit build() dan Tambahkan Tombol Baca
+
+Di method build(), tambahkan ElevatedButton yang memanggil readFile() dan Text yang menampilkan fileText di bawahnya.
+
+```dart
+    children: [
+      Text(
+        'Doc Path:\n$documentPath',
+        textAlign: TextAlign.center, 
+      ),
+      const Divider(),
+      Text(
+        'Temp Path:\n$tempPath',
+        textAlign: TextAlign.center,
+      ),
+      const Divider(),
+      ElevatedButton(
+        onPressed: () => readFile(),
+        child: const Text('Read File'),
+      ),
+      Text(
+        fileText,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.lightBlue,
+        ),
+      ),
+    ],
+```
+
+### Langkah 7: Run
+
+Jalankan aplikasi. Setelah menekan tombol 'Read File', konten yang ditulis (Margherita, Capricciosa, Napoli) akan ditampilkan atau sesuai nama dan NIM Anda.
+
+#### Soal 8
+
+> - Jelaskan maksud kode pada langkah 3 dan 7 !
+>
+>   **Langkah 3 – writeFile()**  
+>
+>   Method `writeFile()` berfungsi untuk menulis teks ke dalam file di direktori dokumen aplikasi. Proses penulisan dilakukan menggunakan `myFile.writeAsString()` secara asinkron agar tidak menghambat UI. Isi file yang ditulis berupa "Nama – NIM" pengguna. Method ini mengembalikan nilai `true` jika penulisan berhasil dan `false` jika terjadi error.
+>
+>   **Langkah 7 – Tombol "Read File"**  
+>
+>     Pada langkah ini, tombol **Read File** digunakan untuk memicu method `readFile()` yang bertugas membaca isi file *pizzas.txt* menggunakan `myFile.readAsString()`. Konten file kemudian disimpan ke variabel `fileText` dan ditampilkan ke layar melalui `setState()`. Dengan demikian, teks yang sebelumnya ditulis ke file dapat dibaca dan diperlihatkan kepada pengguna.
+>
+> - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
+>
+>   ![soal 8](./media/praktikum6.1.jpg)
