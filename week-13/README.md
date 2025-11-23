@@ -171,7 +171,7 @@ body:Text(pizzaString),
 
 > Masukkan hasil capture layar ke laporan praktikum Anda.
 >
-> ![soal 2](./media/praktikum1.2.jpg)
+> <img src="./media/praktikum1.2.jpg" alt="soal 2" width="400">
 
 ### Langkah 11: Membuat file baru pizza.dart
 
@@ -306,7 +306,7 @@ Jalankan aplikasi. Sekarang, Anda akan melihat data pizza ditampilkan dalam daft
 
 > Masukkan hasil capture layar ke laporan praktikum Anda.
 >
-> ![soal 3](./media/praktikum1.3.jpg)
+> <img src="./media/praktikum1.3.jpg" alt="soal 3" width="400">
 
 ### Langkah 23: Tambahkan Method toJson() (Serialization)
 
@@ -347,7 +347,7 @@ return myPizzas;
 
 Jalankan aplikasi. Periksa Debug Console untuk melihat List objek Pizza telah berhasil dikonversi kembali menjadi JSON String.
 
-![praktikum 1 langkah 26](/media/praktikum1.4.png)
+![praktikum 1 langkah 26](./media/praktikum1.4.png)
 
 ---
 
@@ -413,7 +413,7 @@ Pizza.fromJson(Map<String, dynamic> json) {
 
 Setelah mengimplementasikan semua perbaikan tipe data, aplikasi akan berjalan, tetapi mungkin menampilkan "null" di UI jika ada bidang yang hilang atau gagal diparsing (seperti pizzaName atau description).
 
-![praktikum 2 langkah 9](./media/praktikum2.1.jpg)
+<img src="./media/praktikum2.1.jpg" alt="praktikum 2 langkah 9" width="400">
 
 ### Langkah 10: Tambahkan Operator Ternary untuk Output User-Friendly
 
@@ -437,7 +437,7 @@ Jalankan aplikasi. Sekarang data yang tidak konsisten telah ditangani dengan bai
 
 > Capture hasil running aplikasi Anda, kemudian impor ke laporan praktikum Anda!
 >
-> ![soal 4](./media/praktikum2.2.jpg)
+> <img src="./media/praktikum2.2.jpg" alt="soal 4" width="400">
 
 ---
 
@@ -497,7 +497,7 @@ Jalankan aplikasi. Tidak akan ada perubahan visual, tetapi kode Anda kini lebih 
 >
 > - Capture hasil praktikum Anda dan lampirkan di README.
 >   
->   ![soal 5](./media/praktikum1.3.jpg)
+>   <img src="./media/praktikum1.3.jpg" alt="soal 5" width="400">
 
 ---
 
@@ -612,7 +612,7 @@ Ganti body Scaffold Anda dengan tata letak yang menampilkan hitungan dan tombol 
 
 Aplikasi sekarang akan menampilkan "You have opened the app 1 times" (jika ini pembukaan pertama).
 
-![praktikum 4 langkah 12](./media/praktikum4.1.jpg)
+<img src="./media/praktikum4.1.jpg" alt="praktikum 4 langkah 12" width="400">
 
 ### Langkah 13: Buat Method deletePreference()
 
@@ -647,7 +647,7 @@ Jalankan aplikasi. Tombol reset sekarang akan berfungsi, menghapus semua pasanga
 
 > Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
-> ![soal 6](./media/praktikum4.2.jpg)
+> <img src="./media/praktikum4.2.jpg" alt="soal 6" width="400">
 
 ---
 
@@ -744,7 +744,7 @@ Jalankan aplikasi. Anda akan melihat path absolut ke direktori dokumen dan cache
 
 > Capture hasil praktikum Anda dan lampirkan di README.
 >
-> ![soal 7](./media/praktikum5.1.jpg)
+> <img src="./media/praktikum5.1.jpg" alt="soal 7" width="400">
 
 ---
 
@@ -864,7 +864,7 @@ Jalankan aplikasi. Setelah menekan tombol 'Read File', konten yang ditulis (Marg
 >
 > - Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
 >
->   ![soal 8](./media/praktikum6.1.jpg)
+>   <img src="./media/praktikum6.1.jpg" alt="soal 8" width="400">
 
 ---
 
@@ -968,4 +968,4 @@ Jalankan aplikasi. Masukkan teks, simpan, lalu baca kembali. Teks tersebut sehar
 
 #### Soal 9
 > Capture hasil praktikum Anda berupa GIF dan lampirkan di README.
-> ![soal 9](./media/praktikum7.1.gif)
+> <img src="./media/praktikum7.1.gif" alt="soal 9" width="400">
