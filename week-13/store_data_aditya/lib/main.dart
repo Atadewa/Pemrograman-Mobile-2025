@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +31,40 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String documentPath = '';
   String tempPath = '';
+  int appCounter = 0;
+  late File myFile;
+  String fileText = '';
+
+  Future<bool> writeFile() async {
+    try {
+      await myFile.writeAsString('Aditya Atadewa - 2341720174');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> readFile() async {
+    try {
+      String fileContent = await myFile.readAsString();
+      setState(() {
+        fileText = fileContent;
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+    await prefs.setInt('appCounter', appCounter);
+    setState(() {
+      appCounter = appCounter;
+    });
+  }
 
   Future getPaths() async {
     final docDir = await getApplicationDocumentsDirectory();
@@ -42,14 +78,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getPaths();
+    readAndWritePreference();
+    getPaths().then((_) {
+      myFile = File('$documentPath/pizzas.txt');
+      writeFile();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('JSON - Atadewa'),
+        title: const Text('Path Provider - Atadewa'),
         backgroundColor: Colors.tealAccent.shade700,
       ),
       body: Padding(
@@ -65,6 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'Temp Path:\n$tempPath',
               textAlign: TextAlign.center,
+            ),
+            const Divider(),
+            ElevatedButton(
+              onPressed: () => readFile(),
+              child: const Text('Read File'),
+            ),
+            Text(
+              fileText,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.lightBlue,
+              ),
             ),
           ],
         ),
