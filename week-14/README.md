@@ -300,3 +300,127 @@ Di `Scaffold` dari metode `build()` kelas `_MyHomePageState`, ditambahkan `Float
 >   | Screenshot | GIF |
 >   |:----------:|:--------:|
 >   | <img src="./media/praktikum2.2.jpg" alt="soal 2" width="400"> | <img src="./media/praktikum2.3.gif" alt="soal 2" width="400"> |
+
+## Praktikum 3: Memperbarui Data di Web Service (PUT)
+
+### Langkah 1: Membuat Stub Baru
+
+- Nama: Put Pizza
+- Verb: PUT
+- Alamat: /pizza
+- Status: 200
+- Tipe Body: json
+- Body: {"message": "Pizza was updated"}
+
+![praktikum 3](./media/praktikum3.1.png)
+
+### Langkah 2: Menambahkan method `putPizza` ke kelas `HttpHelper`
+
+```dart
+Future<String> putPizza(Pizza pizza) async {
+  const putPath = '/pizza';
+  String put = json.encode(pizza.toJson());
+  Uri url = Uri.https(authority, putPath);
+  http.Response r = await http.put(
+    url,
+    body: put,
+  );
+  return r.body;
+}
+```
+
+### Langkah 3: Mengubah `pizza_detail.dart`
+
+Di kelas `PizzaDetailScreen` di file `pizza_detail.dart`, ditambahkan dua properti, sebuah Pizza dan sebuah boolean, dan di konstruktor, atur kedua properti seperti berikut:
+
+```dart
+final Pizza pizza;
+final bool isNew;
+
+const PizzaDetailScreen(
+    {super.key, required this.pizza, required this.isNew});
+```
+
+Di kelas `PizzaDetailScreenState`, melakukan override metode `initState`. Ketika properti `isNew` dari kelas `PizzaDetail` bukan baru, akan mengatur konten TextField dengan nilai-nilai objek Pizza yang diteruskan:
+
+```dart
+@override
+void initState() {
+  if (!widget.isNew) {
+    txtId.text = widget.pizza.id.toString();
+    txtName.text = widget.pizza.pizzaName;
+    txtDescription.text = widget.pizza.description;
+    txtPrice.text = widget.pizza.price.toString();
+    txtImageUrl.text = widget.pizza.imageUrl;
+  }
+  super.initState();
+}
+```
+
+Mengubah metode `savePizza` sehingga memanggil metode `helper.postPizza` ketika `isNew` benar, dan `helper.putPizza` ketika salah:
+
+```dart
+Future savePizza() async {
+...
+    final result = await (widget.isNew
+  ? helper.postPizza(pizza)
+  : helper.putPizza(pizza));    
+  setState(() {
+      operationResult = result;
+    });
+  }
+ ``` 
+
+### Langkah 4: Mengubah `main.dart`
+
+Di file main.dart, di metode build dari `_MyHomePageState`, ditambahkan properti `onTap` ke `ListTile` sehingga ketika pengguna mengetuknya, aplikasi akan mengubah rute dan menampilkan layar `PizzaDetail`, meneruskan pizza saat ini dan false untuk parameter `isNew`:
+
+```dart
+    return ListTile(
+      title: Text(snapshot.data![position].pizzaName),
+      subtitle: Text(
+        snapshot.data![position].description +
+            ' - € ' +
+            snapshot.data![position].price.toString(),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PizzaDetailScreen(
+              pizza: snapshot.data![position],
+              isNew: false,
+            ),
+          ),
+        );
+      },
+    );
+```
+
+Di `floatingActionButton`, diteruskan Pizza baru dan `true` untuk parameter `isNew` ke rute `PizzaDetail`:
+
+```dart
+    floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PizzaDetailScreen(pizza: Pizza(), isNew: true),
+          ),
+        );
+      },
+    ),
+```
+
+### Langkah 5: Running Aplikasi
+
+#### Soal 3
+
+> - Ubah salah satu data dengan Nama dan NIM Anda, lalu perhatikan hasilnya di Wiremock.
+> - Capture hasil aplikasi Anda berupa GIF di README
+>
+>   <img src="./media/praktikum3.2.gif" alt="soal 3" width="400">
+>
+>   ![Soal 3](./media/praktikum3.3.png)
