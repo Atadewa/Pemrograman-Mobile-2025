@@ -424,3 +424,58 @@ Di `floatingActionButton`, diteruskan Pizza baru dan `true` untuk parameter `isN
 >   <img src="./media/praktikum3.2.gif" alt="soal 3" width="400">
 >
 >   ![Soal 3](./media/praktikum3.3.png)
+
+## Praktikum 4: Menghapus Data dari Web Service (DELETE)
+
+### Langkah 1: Membuat Stub Baru
+
+- Nama: Delete Pizza
+- Verb: DELETE
+- Alamat: /pizza
+- Status: 200
+- Tipe Body: json
+- Body: {"message": "Pizza was deleted"}
+
+![praktikum 4](./media/praktikum4.1.png)
+
+### Langkah 2: Menambahkan method `deletePizza`
+
+Mambahkan method `deletePizza` ke kelas `HttpHelper` di file `http_helper.dart`:
+
+```dart
+  Future<String> deletePizza(int id) async {
+    const deletePath = '/pizza';
+    Uri url = Uri.https(authority, deletePath);
+    http.Response r = await http.delete(url);
+    return r.body;
+  }
+```
+
+### Langkah 3: Mengubah `main.dart`
+
+Di file `main.dart`, di metode `build` dari kelas `_MyHomePageState`, melakukan refactor `itemBuilder` dari `ListView.builder` sehingga `ListTile` terkandung dalam widget `Dismissible`, sebagai berikut:
+
+```dart
+    return ListView.builder(
+      itemCount: (snapshot.data == null) ? 0 : snapshot.data!.length,
+      itemBuilder: (BuildContext context, int position) {
+        return Dismissible(
+          key: Key(position.toString()),
+          onDismissed: (item) {
+            HttpHelper helper = HttpHelper();
+            snapshot.data!.removeWhere(
+              (element) => element.id == snapshot.data![position].id,
+            );
+            helper.deletePizza(snapshot.data![position].id);
+          },
+          child: ListTile(
+            ...
+```
+
+### Langkah 4: Running Aplikasi
+
+### Soal 4
+
+> Capture hasil aplikasi Anda berupa GIF di README
+>
+> <img src="./media/praktikum4.2.gif" alt="soal 4" width="400">
