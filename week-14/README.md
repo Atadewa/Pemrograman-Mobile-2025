@@ -128,7 +128,9 @@ Widget build(BuildContext context) {
 >
 > - Capture hasil aplikasi Anda, lalu masukkan ke laporan di README.
 > 
->   <img src="./media/praktikum1.4.jpg" alt="soal 1" width="400">
+>   <img src="./media/praktikum1.4.png" alt="soal 1" width="400">
+
+---
 
 ## Praktikum 2: Mengirim Data ke Web Service (POST)
 
@@ -301,6 +303,8 @@ Di `Scaffold` dari metode `build()` kelas `_MyHomePageState`, ditambahkan `Float
 >   |:----------:|:--------:|
 >   | <img src="./media/praktikum2.2.jpg" alt="soal 2" width="400"> | <img src="./media/praktikum2.3.gif" alt="soal 2" width="400"> |
 
+---
+
 ## Praktikum 3: Memperbarui Data di Web Service (PUT)
 
 ### Langkah 1: Membuat Stub Baru
@@ -424,6 +428,8 @@ Di `floatingActionButton`, diteruskan Pizza baru dan `true` untuk parameter `isN
 >   <img src="./media/praktikum3.2.gif" alt="soal 3" width="400">
 >
 >   ![Soal 3](./media/praktikum3.3.png)
+
+---
 
 ## Praktikum 4: Menghapus Data dari Web Service (DELETE)
 
