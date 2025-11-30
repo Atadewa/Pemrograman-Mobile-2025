@@ -129,3 +129,174 @@ Widget build(BuildContext context) {
 > - Capture hasil aplikasi Anda, lalu masukkan ke laporan di README.
 > 
 >   <img src="./media/praktikum1.4.jpg" alt="soal 1" width="400">
+
+## Praktikum 2: Mengirim Data ke Web Service (POST)
+
+### Langkah 1: Membuat Stub Baru
+
+- Nama: Post Pizza
+- Verb: POST
+- Alamat: /pizza
+- Status: 201
+- Tipe Body: json
+- Body: {"message": "The pizza was posted"}
+
+![Praktikum 2](./media/praktikum2.1.png)
+
+### Langkah 2: Membuat method `postPizza`
+
+Di file `httphelper.dart`, di kelas `HttpHelper`, membuat method baru `postPizza`, sebagai berikut:
+
+```dart
+Future<String> postPizza(Pizza pizza) async {
+  const postPath = '/pizza';
+  String post = json.encode(pizza.toJson());
+  Uri url = Uri.https(authority, postPath);
+  http.Response r = await http.post(
+    url,
+    body: post,
+  );
+  return r.body;
+}
+```
+
+### Langkah 3: Membuat file `pizza_detail.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'pizza.dart';
+import 'httphelper.dart';
+
+class PizzaDetailScreen extends StatefulWidget {
+  const PizzaDetailScreen({super.key});
+
+  @override
+  State<PizzaDetailScreen> createState() => _PizzaDetailScreenState();
+}
+
+class _PizzaDetailScreenState extends State<PizzaDetailScreen> {
+  final TextEditingController txtId = TextEditingController();
+  final TextEditingController txtName = TextEditingController();
+  final TextEditingController txtDescription = TextEditingController();
+  final TextEditingController txtPrice = TextEditingController();
+  final TextEditingController txtImageUrl = TextEditingController();
+  String operationResult = '';
+
+  @override
+  void dispose() {
+    txtId.dispose();
+    txtName.dispose();
+    txtDescription.dispose();
+    txtPrice.dispose();
+    txtImageUrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Pizza Detail')),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                operationResult,
+                style: TextStyle(
+                  backgroundColor: Colors.green[200],
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: txtId,
+                decoration: const InputDecoration(hintText: 'Insert ID'),
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: txtName,
+                decoration: const InputDecoration(
+                  hintText: 'Insert Pizza Name',
+                ),
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: txtDescription,
+                decoration: const InputDecoration(
+                  hintText: 'Insert Description',
+                ),
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: txtPrice,
+                decoration: const InputDecoration(hintText: 'Insert Price'),
+              ),
+              const SizedBox(height: 24),
+              TextField(
+                controller: txtImageUrl,
+                decoration: const InputDecoration(hintText: 'Insert Image Url'),
+              ),
+              const SizedBox(height: 48),
+              ElevatedButton(
+                child: const Text('Send Post'),
+                onPressed: () {
+                  postPizza();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future postPizza() async {
+    HttpHelper helper = HttpHelper();
+    Pizza pizza = Pizza(
+      id: int.tryParse(txtId.text) ?? 0,
+      pizzaName: txtName.text,
+      description: txtDescription.text,
+      price: double.tryParse(txtPrice.text) ?? 0.0,
+      imageUrl: txtImageUrl.text,
+    );
+    String result = await helper.postPizza(pizza);
+    setState(() {
+      operationResult = result;
+    });
+  }
+}
+```
+
+### Langkah 4: Melakukan import di `main.dart`
+
+```dart
+import 'pizza_detail.dart';
+```
+
+### Langkah 5: Menambahkan `FLoatingActionButton`
+
+Di `Scaffold` dari metode `build()` kelas `_MyHomePageState`, ditambahkan `FloatingActionButton` yang akan navigasi ke rute PizzaDetail:
+
+```dart
+    floatingActionButton: FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PizzaDetailScreen()),
+        );
+      },
+    ),
+```
+
+### Langkah 6: Running Aplikasi
+
+#### Soal 2
+
+> - Tambahkan field baru dalam JSON maupun POST ke Wiremock!
+> - Capture hasil aplikasi Anda berupa GIF di README
+>
+>   | Screenshot | GIF |
+>   |:----------:|:--------:|
+>   | <img src="./media/praktikum2.2.jpg" alt="soal 2" width="400"> | <img src="./media/praktikum2.3.gif" alt="soal 2" width="400"> |
